@@ -71,11 +71,17 @@ block script
       });
 
       $(".btn.btn-default.btn-xs").on('click',function(event){
-          $("searchTags").tokenfield();
-          var search = $("#searchTags").val()+","+$(this).attr('id');
-          if (search[0]==',')
-              search = search.substring(1,(search.length));
-          $('#searchTags').tokenfield('setTokens',search);
-      })
+          $('#searchTags').tokenfield('createToken',$(this).attr('id'));
+          var search = $("#searchTags").val();
+          var vector = search.split(',');
+          var last = $(this).attr('id');
 
+          for (var i=0; i < vector.length - 1; i++){
+                   if (vector[i].trim() == last.trim()) {
+                          vector.pop();
+                   }
+          }
+
+          $('#searchTags').tokenfield('setTokens',vector);
+      })
 

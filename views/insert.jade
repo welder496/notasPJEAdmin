@@ -53,3 +53,15 @@ block script
    script(src='/stylesheets/editors5/dist/wysihtml5x-toolbar.min.js')
    script(src='/stylesheets/editors5/dist/bootstrap3-wysihtml5.js')
    script(src='/javascripts/componentsInit/textAreaEditor.js')
+   script.
+      $("#insertTags").on('tokenfield:createtoken', function(event){
+          var existingTokens = $(this).tokenfield('getTokens');
+          $.each(existingTokens, function(index, token){
+                if (token.value === event.attrs.value) {
+                    event.preventDefault();
+                }
+          });
+      });
+
+
+

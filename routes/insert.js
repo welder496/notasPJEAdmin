@@ -33,6 +33,16 @@ router.post('/',function(req, res, next){
           notadata['file0']=rest.file(file.path,null,file.size,null,file.mimetype);
       }
    }
+   var vector = notadata['tags'];
+   vector = vector.split(',');
+   var found = false;
+   for (var i=0; i < vector.length; i++){
+      if (vector[i] == notadata['codigo']) {
+          found = true;
+      }
+   }
+   if (! found)
+      notadata['tags']=notadata['codigo']+','+notadata['tags'];
    notasRest.newNota(notadata,function(data){
      res.render('insert',{show: 'true', message: data.message});
    });

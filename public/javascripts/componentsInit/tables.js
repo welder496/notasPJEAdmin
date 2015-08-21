@@ -64,11 +64,11 @@ $(document).ready( function() {
               {"sTitle": "Nota", "sWidth": "90%"},
 	        {"mData":null,"bSortable":false,"mRender":
                      function(data, type, full) {
-                         return '<form id="'+full[0]+'"action="edit" method="post">'+
+                         return  '<form id="'+full[0]+'"action="edit" method="post">'+
                          '<input type="hidden" name="codigo" value="'+full[0]+'"/>'+
                          '<input type="hidden" name="versao" value="'+full[4]+'"/>'+
                          '<input type="hidden" name="comando" value="edit"/>'+
-                         '<a class="btn btn-default" onclick=document.getElementById("'+full[0]+'").submit();>'+
+                         '<button class="btn btn-default" onclick=document.getElementById("'+full[0]+'").submit();>'+
                          '<span class="glyphicon glyphicon-pencil"></span></a></form>';
                      }
                },
@@ -111,7 +111,7 @@ $(document).ready( function() {
                          '<input type="hidden" name="codigo" value="'+full[0]+'"/>'+
                          '<input type="hidden" name="versao" value="'+full[4]+'"/>'+
                          '<input type="hidden" name="comando" value="edit"/>'+
-                         '<a class="btn btn-default" onclick=document.getElementById("'+full[0]+'").submit();>'+
+                         '<button class="btn btn-default" onclick=document.getElementById("'+full[0]+'").submit();>'+
                          '<span class="glyphicon glyphicon-pencil"></span></a></form>';
                       }
                 },

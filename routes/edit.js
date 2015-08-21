@@ -37,6 +37,8 @@ router.post('/', function(req, res, next){
       }
    });
    if (comando == 'edit') {
+      console.log("Chegou aqui!!");
+      console.log(codigo);
       notasRest.getNotaByCodigo(codigo, function(data){
          res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, message: message, show:'false'});
       });
@@ -63,6 +65,17 @@ router.post('/', function(req, res, next){
             notadata['file0']=rest.file(file.path,null,file.size,null,file.mimetype);
           }
        }
+       var vector = notadata['tags'];
+       vector = vector.split(',');
+       var found = false;
+       for (var i=0; i < vector.length; i++){
+          console.log(vector[i]);
+          if (vector[i] == notadata['codigo']) {
+              found = true;
+          }
+       }
+       if (! found)
+          notadata['tags']=notadata['codigo']+','+notadata['tags'];
        notasRest.updateNotaByCodigo(codigo,notadata, function(data){
             if (data.hasOwnProperty('message')){
                 message = data.message;
