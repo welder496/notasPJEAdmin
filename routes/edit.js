@@ -37,8 +37,6 @@ router.post('/', function(req, res, next){
       }
    });
    if (comando == 'edit') {
-      console.log("Chegou aqui!!");
-      console.log(codigo);
       notasRest.getNotaByCodigo(codigo, function(data){
          res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, message: message, show:'false'});
       });
