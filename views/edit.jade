@@ -86,7 +86,7 @@ block script
       $(document).on('click','a',function(event){
          var value = $(this).attr('value');
          rest.post('/documents',{codigo: "#{codigo}", value: value},function(data){
-            window.location=data;
+            window.open(data);
          });
       });
 
