@@ -67,7 +67,6 @@ router.post('/', function(req, res, next){
        vector = vector.split(',');
        var found = false;
        for (var i=0; i < vector.length; i++){
-          console.log(vector[i]);
           if (vector[i] == notadata['codigo']) {
               found = true;
           }
