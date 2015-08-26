@@ -1,5 +1,5 @@
 $("#searchTags").tokenfield({
-   limit: 10,
+   limit: 20,
    autocomplete: {
      //source:['Funcional','Não-Funcional','Regra de Negócio'],
      delay: 100
@@ -9,7 +9,7 @@ $("#searchTags").tokenfield({
  });
 
 $("#insertTags").tokenfield({
-	limit: 10,
+	limit: 20,
 	autocomplete: {
 	  //source:['Funcional','Não-Funcional','Regra de Negócio'],
 	  delay: 100
@@ -19,7 +19,7 @@ $("#insertTags").tokenfield({
 });
 
 $("#editTags").tokenfield({
-   limit: 10,
+   limit: 20,
    autocomplete: {
      //source:['Funcional','Não-Funcional','Regra de Negócio'],
      delay: 100
