@@ -12,6 +12,8 @@ var searchForTags = require('./routes/searchForTags');
 var searchForCodigo = require('./routes/searchForCodigo');
 var searchForNota = require('./routes/searchForNota');
 var documents = require('./routes/documents');
+var perfil = require('./routes/perfil');
+var funcionalidade = require('./routes/funcionalidade');
 var version = require('./routes/version');
 var help = require('./routes/help');
 
@@ -40,6 +42,8 @@ app.use('/searchForTags', searchForTags);
 app.use('/searchForCodigo', searchForCodigo);
 app.use('/searchForNota', searchForNota);
 app.use('/documents', documents);
+app.use('/perfil',perfil);
+app.use('/funcionalidade',funcionalidade);
 app.use('/version',version);
 app.use('/help', help);
 

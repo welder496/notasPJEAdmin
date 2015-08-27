@@ -36,7 +36,7 @@ block content
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
          div.col-sm-2
-            input#insertCodigo.form-control(type="text" name="codigo" placeholder="Insira um código")
+            input#insertCodigo.form-control(type="text" name="codigo" required placeholder="Insira um código")
 
       div.form-group
          label.control-label.col-sm-2(for="nota") Nota:
@@ -185,7 +185,7 @@ block content
               div.btn-group
                   a.btn.btn-default.dropdown-toggle.btn-select(data-toggle='dropdown' href='#') Nenhum Tipo&nbsp
                       span.caret
-                  ul#Funcionalidade.dropdown-menu(required)
+                  ul#Funcionalidade.dropdown-menu
                       li
                         a(href="#") Nenhum Tipo
                       li
@@ -211,7 +211,7 @@ block content
                       li
                         a(href="#") Interoperabilidade
                       li
-                        a(href="#") Teste automatizado
+                          a(href="#") Teste automatizado
 
       div.form-group
          label.control-label.col-sm-2(for="tags") Tags:
@@ -245,7 +245,6 @@ block script
           var existingTokens = $(this).tokenfield('getTokens');
           $.each(existingTokens, function(index, token){
                 if (token.value === event.attrs.value) {
-                    alert("Chegou aqui!!");
                     event.preventDefault();
                 }
           });
@@ -280,12 +279,14 @@ block script
       $('#Perfil.dropdown-menu li a').click(function(){
           var selText = $(this).text();
           $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-          $('#insertTags').tokenfield('createToken', 'Perfil: '+selText);
+          if (selText != 'Nenhum Tipo')
+             $('#insertTags').tokenfield('createToken', 'Perfil: '+selText);
       });
 
       $('#Funcionalidade.dropdown-menu li a').click(function(){
           var selText = $(this).text();
           $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-          $('#insertTags').tokenfield('createToken', 'Funcionalidade: '+selText);
+          if (selText != 'Nenhum Tipo')
+             $('#insertTags').tokenfield('createToken', 'Funcionalidade: '+selText);
       });
 
