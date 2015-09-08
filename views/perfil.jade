@@ -1,6 +1,7 @@
 extends layout
 
 block css
+   link(rel='stylesheet', href='/stylesheets/jquery-ui/jquery-ui.css')
 
 block content
    form.form-horizontal(role="form" method="post" enctype="multipart/form-data")
@@ -8,5 +9,36 @@ block content
          label.control-label.col-sm-2(for="codigo") Perfil:
          div.col-sm-10
             input#insertPerfil.form-control(type="text" name="perfil" required placeholder="Insira um perfil")
+      div.form-group
+         label.control-label.col-sm-2(for="codigo")
+         div.col-sm-10
+            select.form-control.input-lg(multiple size="15")
+
+      div.form-group
+         div.col-sm-offset-2.col-sm-10
+            button#salvar.btn.btn-default(type="submit") Salvar
+            button#apagar.btn.btn-default(type="submit") Apagar
 
 block script
+   script.
+      $('select').on('click',function(){
+         $('#insertPerfil').val($('select option:selected').text());
+      });
+
+      $('select').on('keyup',function(){
+         $('#insertPerfil').val($('select option:selected').text());
+      });
+
+      $(document).on('load',function(){
+         rest.get('/perfil');
+      });
+
+      $('#salvar').on('click',function(event){
+         var Perfil = $("#insertPerfil").val();
+         rest.post('/perfil',{Perfil:Perfil});
+      });
+
+      $('#apagar').on('click',function(event){
+         var Perfil = $("#insertPerfil").val();
+         rest.del('/perfil',{Perfil:Perfil});
+      });
