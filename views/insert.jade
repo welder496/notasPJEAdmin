@@ -19,7 +19,7 @@ block content
           label.control-label.col-sm-2(for="tipo nota") Tipo de Nota:
           div.col-sm-2
               div.btn-group
-                  a.btn.btn-default.dropdown-toggle.btn-select(data-toggle='dropdown' href='#') Nenhum Tipo&nbsp
+                  a.btn.btn-default.dropdown-toggle.btn-select(data-toggle='dropdown' tabIndex='0' href='#') Nenhum Tipo&nbsp
                       span.caret
                   ul#TipoNota.dropdown-menu
                       li
@@ -35,192 +35,53 @@ block content
 
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
-         div.col-sm-2
-            input#insertCodigo.form-control(type="text" name="codigo" required placeholder="Insira um código")
+         div.col-sm-3
+            input#insertCodigo.form-control(type="text" name="codigo" tabindex=1 required maxlength="20" placeholder="Insira um código" value="#{codigo}")
 
       div.form-group
          label.control-label.col-sm-2(for="nota") Nota:
          div.col-sm-10
-            textarea#insertNota.form-control(rows="20" name="nota" placeholder="Escreva uma nota ou descrição aqui!!")
+            textarea#insertNota.form-control(rows="20" name="nota" placeholder="Escreva uma nota ou descrição aqui!!") #{nota}
 
       div.form-group
          label.control-label.col-sm-2(for="arquivo") Arquivo:
          div.col-sm-4
-            div.input-group
-               input#insertArquivos.form-control(type="file" name="file" accept="image/*,audio/*,video/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" placeholder="Insira um arquivo aqui!!" multiple)
+            input#insertArquivos.form-control(type="file" name="file" tabindex=3 accept="image/*,audio/*,video/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" placeholder="Insira um arquivo aqui!!" multiple)
 
       div.form-group
-          label.control-label.col-sm-2(for="Issue") Número da Issue:
-          div.col-sm-4
-              div.input-group
-                  input#insertIssue.form-control(type="text" name="issue" required placeholder="Insira o número de uma Issue!!")
+         label.control-label.col-sm-2(for="Issue") Número da Issue:
+         div.col-sm-4
+            input#insertIssue.form-control(type="text" name="issue" tabindex=4 maxlength="20" required placeholder="Insira o número de uma Issue!!")
 
       div.form-group
           label.control-label.col-sm-2(for="Perfil") Perfil:
-          div.col-sm-4
-              div.btn-group
-                  a.btn.btn-default.dropdown-toggle.btn-select(data-toggle='dropdown' href='#') Nenhum Tipo&nbsp
-                      span.caret
-                  ul#Perfil.dropdown-menu(required)
-                      li
-                        a(href="#") Nenhum Tipo
-                      li
-                        a(href="#") Jus Postulandi
-                      li
-                        a(href="#") Advogado
-                      li
-                        a(href="#") Procurador
-                      li
-                        a(href="#") Diretor de Secretaria
-                      li
-                        a(href="#") Magistrado
-                      li
-                        a(href="#") Administrador
-                      li
-                        a(href="#") Administrador Arquivo
-                      li
-                        a(href="#") Administrador Audiência
-                      li
-                        a(href="#") Administrador Conhecimento
-                      li
-                        a(href="#") Administrador Contadoria
-                      li
-                        a(href="#") Administrador do Protocolo
-                      li
-                        a(href="#") Administrador Execução
-                      li
-                        a(href="#") Administrador Malote
-                      li
-                        a(href="#") Administrador Perícia
-                      li
-                        a(href="#") Administrador (principal)
-                      li
-                        a(href="#") Administrador Triagem
-                      li
-                        a(href="#") Assessor
-                      li
-                        a(href="#") Assessor-chefe
-                      li
-                        a(href="#") Assistente de advogado
-                      li
-                        a(href="#") Assistente de procuradoria
-                      li
-                        a(href="#") Assistente gestor de advogado
-                      li
-                        a(href="#") Assistente gestor de procuradoria
-                      li
-                        a(href="#") Conciliador
-                      li
-                        a(href="#") Consulta
-                      li
-                        a(href="#") Editor da ajuda
-                      li
-                        a(href="#") Estagiário Arquivo
-                      li
-                        a(href="#") Estagiário Audiência
-                      li
-                        a(href="#") Estagiário Conhecimento
-                      li
-                        a(href="#") Estagiário Contadoria
-                      li
-                        a(href="#") Estagiário de Pericia
-                      li
-                        a(href="#") Estagiário Execução
-                      li
-                        a(href="#") Estagiário Malote
-                      li
-                        a(href="#") Estagiário Triagem
-                      li
-                        a(href="#") Oficial de Justiça
-                      li
-                        a(href="#") Oficial de Justiça Distribuidor
-                      li
-                        a(href="#") Perito
-                      li
-                        a(href="#") Procurador/Gestor
-                      li
-                        a(href="#") Procurador MP
-                      li
-                        a(href="#") Procurador MP/Gestor
-                      li
-                        a(href="#") Secretário da Sessão
-                      li
-                        a(href="#") Secretário de Audiência
-                      li
-                        a(href="#") Servidor Arquivo
-                      li
-                        a(href="#") Servidor Audiência
-                      li
-                        a(href="#") Servidor Conhecimento
-                      li
-                        a(href="#") Servidor Contadoria
-                      li
-                        a(href="#") Servidor do protocolo
-                      li
-                        a(href="#") Servidor do protocolo da seção
-                      li
-                        a(href="#") Servidor Execução
-                      li
-                        a(href="#") Servidor Geral
-                      li
-                        a(href="#") Servidor Malote
-                      li
-                        a(href="#") Servidor Perícia
-                      li
-                        a(href="#") Servidor Prazo
-                      li
-                        a(href="#") Servidor Retificador
-                      li
-                        a(href="#") Servidor Triagem
-                      li
-                        a(href="#") Usuário Push
-                      li
-                        a(href="#") Usuário sem login no sistema
-                      li
-                        a(href="#") Outro (especificar com uma Tag)
+          div.col-sm-10
+             select#perfil.form-control.input-lg(multiple tabindex=5 size="5" required)
+               if (perfils != "")
+                  for perfil in perfils
+                     option(id="#{perfil._id}") #{perfil.descricao}
 
       div.form-group
           label.control-label.col-sm-2(for="Funcionalidade") Funcionalidade:
-          div.col-sm-4
-              div.btn-group
-                  a.btn.btn-default.dropdown-toggle.btn-select(data-toggle='dropdown' href='#') Nenhum Tipo&nbsp
-                      span.caret
-                  ul#Funcionalidade.dropdown-menu
-                      li
-                        a(href="#") Nenhum Tipo
-                      li
-                        a(href="#") Painel
-                      li
-                        a(href="#") Tarefa
-                      li
-                        a(href="#") Processo
-                      li
-                        a(href="#") Atividades
-                      li
-                        a(href="#") Audiências e sessões
-                      li
-                        a(href="#") Configuração
-                      li
-                        a(href="#") Gestão
-                      li
-                        a(href="#") Login
-                      li
-                        a(href="#") Acesso ao Push
-                      li
-                        a(href="#") Consulta ao andamento processual
-                      li
-                        a(href="#") Interoperabilidade
-                      li
-                          a(href="#") Teste automatizado
+          div.col-sm-5
+             select#funcionalidade.form-control.input-lg(multiple tabindex=6 size="5" required)
+               if (funcionalidades != "")
+                  for funcionalidade in funcionalidades
+                     option #{funcionalidade.descricao}
+          div.col-sm-5
+             select#subTipos.form-control.input-lg(multiple tabindex=7 size="5" required)
+               if (subTipos != "")
+                  for subTipo in subTipos
+                     option #{subTipo}
 
       div.form-group
          label.control-label.col-sm-2(for="tags") Tags:
          div.col-sm-10
-            input#insertTags.form-control(type="text" name="tags" placeholder="Insira tags aqui!!")
+            input#insertTags.form-control(type="text" name="tags" tabindex=8 placeholder="Insira tags aqui!!" value="#{tags}")
 
       div.form-group
          div.col-sm-offset-2.col-sm-10
-            button.btn.btn-default(type="submit") Salvar
+            button#salvar.btn.btn-default(type="submit" tabindex=9) Salvar
 
       #modalInsert.modal
          .modal-dialog
@@ -231,7 +92,7 @@ block content
                .modal-body
                   p #{message}
                .modal-footer
-                  button.btn.btn-default(type="button" data-dismiss="modal") Fechar
+                  button.btn.btn-default(data-dismiss="modal") Fechar
 
 block script
    script(src='/stylesheets/tokenfield/bootstrap-tokenfield.js')
@@ -242,51 +103,90 @@ block script
    script(src='/javascripts/componentsInit/textAreaEditor.js')
    script.
       $('#insertTags').on('tokenfield:createtoken', function(event){
-          var existingTokens = $(this).tokenfield('getTokens');
-          $.each(existingTokens, function(index, token){
-                if (token.value === event.attrs.value) {
-                    event.preventDefault();
-                }
-          });
+             var existingTokens = $(this).tokenfield('getTokens');
+             $.each(existingTokens, function(index, token){
+                   if (token.value === event.attrs.value) {
+                          event.preventDefault();
+                   }
+             });
+      });
+
+      $('select#perfil').on('click',function(event){
+             $('#insertTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
+      });
+
+      $('select#perfil').on('keydown',function(event){
+             if (event.keyCode == 13) {
+                    $('#insertTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
+             }
+      });
+
+      $('select#funcionalidade').on('click',function(event){
+             var descricao = $('select#funcionalidade option:selected').text();
+             rest.get('/insert/funcionalidade/'+descricao, function(data){
+                   $('select#subTipos').empty();
+                   $.each(data, function(i, value){
+                          $('select#subTipos').append($('<option>').text(value).attr('value', value));
+                   });
+             });
+      });
+
+      $('select#funcionalidade').on('keyup',function(event){
+             var descricao = $('select#funcionalidade option:selected').text();
+             rest.get('/insert/'+descricao, function(data){
+                   $('select#subTipos').empty();
+                   $.each(data, function(i, value){
+                          $('select#subTipos').append($('<option>').text(value).attr('value', value));
+                   });
+             });
+      });
+
+      $('select#subTipos').on('click',function(event){
+             var funcionalidade = $('select#funcionalidade option:selected').text();
+             var subTipo = $('select#subTipos option:selected').text();
+             if ((funcionalidade != "") && (subTipo != "")) {
+                    $('#insertTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
+             }
+      });
+
+      $('select#subTipos').on('keydown',function(event){
+             if (event.keyCode == 13) {
+                    var funcionalidade = $('select#funcionalidade option:selected').text();
+                    var subTipo = $('select#subTipos option:selected').text();
+                   if ((funcionalidade != "") && (subTipo != "")) {
+                         $('#insertTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
+                   }
+             }
       });
 
       $("#TipoNota.dropdown-menu li a").click(function(){
-          var selText = $(this).text();
-          $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-          if (selText == 'Regra de Negócio') {
-              $('#insertCodigo').val('RN-');
-          } else
-          if (selText == 'Implementação') {
-              $('#insertCodigo').val('IMP-');
-          } else
-          if (selText == 'Caso de Uso') {
-              $('#insertCodigo').val('UC-');
-          } else
-          if (selText == 'Necessidade Negocial') {
-              $('#insertCodigo').val('NEC-');
-          } else {
-              $('#insertCodigo').val('');
-          }
-          $('#insertTags').tokenfield('createToken', selText);
+             var selText = $(this).text();
+             $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
+             if (selText == 'Regra de Negócio') {
+                  $('#insertCodigo').val('RN-');
+             } else
+             if (selText == 'Implementação') {
+                  $('#insertCodigo').val('IMP-');
+             } else
+             if (selText == 'Caso de Uso') {
+                  $('#insertCodigo').val('UC-');
+             } else
+             if (selText == 'Necessidade Negocial') {
+                  $('#insertCodigo').val('NEC-');
+             } else {
+                  $('#insertCodigo').val('');
+             }
+             $('#insertTags').tokenfield('createToken', selText);
       });
 
-      $('#insertIssue').on('blur',function(){
-            var numero = $(this).val();
-            if (numero !='')
-              $('#insertTags').tokenfield('createToken', 'Issue: '+numero);
-      })
-
-      $('#Perfil.dropdown-menu li a').click(function(){
-          var selText = $(this).text();
-          $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-          if (selText != 'Nenhum Tipo')
-             $('#insertTags').tokenfield('createToken', 'Perfil: '+selText);
+      $('#insertIssue').on('keyup',function(){
+             var numero = $(this).val().replace(/[^\d]/g,'');
+             $('#insertIssue').val(numero);
       });
 
-      $('#Funcionalidade.dropdown-menu li a').click(function(){
-          var selText = $(this).text();
-          $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-          if (selText != 'Nenhum Tipo')
-             $('#insertTags').tokenfield('createToken', 'Funcionalidade: '+selText);
+      $('#insertIssue').on('blur', function(){
+             var numero = $('#insertIssue').val();
+             if (numero != ""){
+                   $('#insertTags').tokenfield('createToken', 'Issue: '+numero);
+             }
       });
-

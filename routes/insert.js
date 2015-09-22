@@ -1,25 +1,93 @@
 var express = require('express');
 var router = express.Router();
 var notasRest = require('notasrest');
+var perfilRest = require('perfilrest');
+var funcionalidadeRest = require('funcionalidaderest');
 var rest = require('restler');
 var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-   res.render('insert',{show: 'false'});
+      var perfils = "";
+      var codigo = "";
+      var nota = "";
+      var tags = "";
+      var message = "";
+      var funcionalidades = "";
+      var descricao = "";
+      var subTipos = "";
+      var show = 'false';
+      perfilRest.getPerfils(function(data){
+             if ((data instanceof Array) && (data.length != 0)) {
+                    perfils = data;
+             }
+             funcionalidadeRest.getFuncionalidades(function(data){
+                   if ((data instanceof Array) && (data.length != 0)) {
+                          funcionalidades = data;
+                          descricao = funcionalidades[0].descricao;
+                   }
+                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                subTipos = data.subtipos;
+                          }
+                          res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                   });
+             });
+      });
+});
+
+/* GET funcionalidade subtipo */
+router.get('/funcionalidade/:descricao', function(req, res, next) {
+      /* Do not change this object */
+      var descricao = req.params.descricao;
+      var perfils = "";
+      var message = "";
+      var funcionalidades = "";
+      var subTipos = "";
+      var show = "false";
+      perfilRest.getPerfils(function(data){
+             if ((data instanceof Array) && (data.length != 0)) {
+                    perfils = data;
+             }
+             funcionalidadeRest.getFuncionalidades(function(data){
+                   if ((data instanceof Array) && (data.length != 0)) {
+                          funcionalidades = data;
+                   }
+                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                subTipos = data.subtipos;
+                          }
+                          res.send(subTipos);
+                   });
+             });
+      });
 });
 
 /* POST home page */
 router.post('/',function(req, res, next){
    /* Do not change this object */
+   var codigo = "";
+   var nota = "";
+   var tags = "";
+   var perfils = "";
+   var message = "";
+   var funcionalidades = "";
+   var subTipos = "";
+   var descricao = "";
+   var show = "false";
    var notadata ={'codigo':'','nota':'','tags':'','versao':'',};
    if (req.body) {
-      if (req.body.codigo)
+      if (req.body.codigo) {
           notadata['codigo'] = req.body.codigo;
-      if (req.body.nota)
+          codigo = req.body.codigo;
+      }
+      if (req.body.nota) {
           notadata['nota'] = req.body.nota;
-      if (req.body.tags)
+          nota = req.body.nota;
+      }
+      if (req.body.tags) {
           notadata['tags'] = req.body.tags;
+      }
       notadata['versao'] = parseInt(0);
    }
    var files = req.files.file;
@@ -41,10 +109,31 @@ router.post('/',function(req, res, next){
           found = true;
       }
    }
-   if (! found)
+   if (! found) {
       notadata['tags']=notadata['codigo']+','+notadata['tags'];
+   }
    notasRest.newNota(notadata,function(data){
-     res.render('insert',{show: 'true', message: data.message});
+       if (data.hasOwnProperty('message')){
+             message = data.message;
+             show = 'true';
+       }
+       perfilRest.getPerfils(function(data){
+             if ((data instanceof Array) && (data.length != 0)) {
+                   perfils = data;
+             }
+             funcionalidadeRest.getFuncionalidades(function(data){
+                   if ((data instanceof Array) && (data.length != 0)) {
+                          funcionalidades = data;
+                          descricao = funcionalidades[0].descricao;
+                   }
+                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                subTipos = data.subtipos;
+                          }
+                          res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                   });
+             });
+       });
    });
 });
 

@@ -17,7 +17,7 @@ block content
    form.form-horizontal(role="form" method="post" enctype="multipart/form-data")
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
-         div.col-sm-2
+         div.col-sm-3
             input#editCodigo.form-control(type="text" readonly placeholder="Insira um número" name="codigo" value="#{codigo}")
 
       div.form-group
@@ -39,6 +39,32 @@ block content
          label.control-label.col-sm-2(for='arquivos') Arquivo(s):
          div.col-sm-4
             input#editArquivos.form-control(type="file" name="file" accept="image/*,audio/*,video/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" placeholder="Insira um arquivo aqui!!" multiple)
+
+      div.form-group
+         label.control-label.col-sm-2(for="Issue") Número da Issue:
+         div.col-sm-4
+            input#editIssue.form-control(type="text" name="issue" maxlength="20" placeholder="Insira o número de uma Issue!!")
+
+      div.form-group
+          label.control-label.col-sm-2(for="Perfil") Perfil:
+          div.col-sm-10
+             select#perfil.form-control.input-lg(multiple size="5")
+               if (perfils != "")
+                  for perfil in perfils
+                     option(id="#{perfil._id}") #{perfil.descricao}
+
+      div.form-group
+          label.control-label.col-sm-2(for="Funcionalidade") Funcionalidade:
+          div.col-sm-5
+             select#funcionalidade.form-control.input-lg(multiple size="5")
+               if (funcionalidades != "")
+                  for funcionalidade in funcionalidades
+                     option #{funcionalidade.descricao}
+          div.col-sm-5
+             select#subTipos.form-control.input-lg(multiple size="5")
+               if (subTipos != "")
+                  for subTipo in subTipos
+                     option #{subTipo}
 
       div.form-group
          label.control-label.col-sm-2(for="tags") Tags:
@@ -69,6 +95,15 @@ block script
    script(src='/stylesheets/editors5/dist/bootstrap3-wysihtml5.js')
    script(src='/javascripts/componentsInit/textAreaEditor.js')
    script.
+      $('#editTags').on('tokenfield:createtoken', function(event){
+             var existingTokens = $(this).tokenfield('getTokens');
+             $.each(existingTokens, function(index, token){
+                   if (token.value === event.attrs.value) {
+                          event.preventDefault();
+                   }
+             });
+      });
+
       $(document).on('click','button.btn.btn-default.btn-xs', function(event){
          var i = $(this).attr('id');
          var value = $(this).attr('value');
@@ -81,6 +116,55 @@ block script
             $('#versao.form-control').val(data.versao);
          });
          $('#comando.form-control').val('edit');
+      });
+
+
+      $('select#perfil').on('click',function(event){
+             $('#editTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
+      });
+
+      $('select#perfil').on('keydown',function(event){
+             if (event.keyCode == 13) {
+                    $('#editTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
+             }
+      });
+
+      $('select#funcionalidade').on('click',function(event){
+             var descricao = $('select#funcionalidade option:selected').text();
+             rest.get('/insert/'+descricao, function(data){
+                   $('select#subTipos').empty();
+                   $.each(data, function(i, value){
+                          $('select#subTipos').append($('<option>').text(value).attr('value', value));
+                   });
+             });
+      });
+
+      $('select#funcionalidade').on('keyup',function(event){
+             var descricao = $('select#funcionalidade option:selected').text();
+             rest.get('/insert/'+descricao, function(data){
+                   $('select#subTipos').empty();
+                   $.each(data, function(i, value){
+                          $('select#subTipos').append($('<option>').text(value).attr('value', value));
+                   });
+             });
+      });
+
+      $('select#subTipos').on('click',function(event){
+             var funcionalidade = $('select#funcionalidade option:selected').text();
+             var subTipo = $('select#subTipos option:selected').text();
+             if ((funcionalidade != "") && (subTipo != "")) {
+                    $('#editTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
+             }
+      });
+
+      $('select#subTipos').on('keydown',function(event){
+             if (event.keyCode == 13) {
+                   var funcionalidade = $('select#funcionalidade option:selected').text();
+                   var subTipo = $('select#subTipos option:selected').text();
+                   if ((funcionalidade != "") && (subTipo != "")) {
+                         $('#editTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
+                   }
+             }
       });
 
       $(document).on('click','a',function(event){
@@ -97,4 +181,17 @@ block script
          else
             $('#listaArquivos').attr('style','display: block');
       });
+
+      $('#editIssue').on('keyup',function(){
+             var numero = $(this).val().replace(/[^\d]/g,'');
+             $('#editIssue').val(numero);
+      });
+
+      $('#editIssue').on('blur', function(){
+             var numero = $('#editIssue').val();
+             if (numero != ""){
+                   $('#editTags').tokenfield('createToken', 'Issue: '+numero);
+             }
+      });
+
 

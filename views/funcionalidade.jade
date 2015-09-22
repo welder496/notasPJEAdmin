@@ -1,7 +1,174 @@
 extends layout
 
 block css
+   link(rel='stylesheet', href='/stylesheets/jquery-ui/jquery-ui.css')
+   script(src='/stylesheets/datatables/media/js/jquery.js')
+   script.
+      if (#{show}) {
+         $(document).ready(function(){
+            $('#modalPerfil').modal({backdrop: 'static', show: true});
+         });
+      }
 
 block content
+   form.form-horizontal(role="form" method="post")
+      div.form-group
+         label.control-label.col-sm-2(for="codigo") Funcionalidade:
+         div.col-sm-10
+            div.input-group
+               input#descricao.form-control(type="text" name="descricao" placeholder="Insira uma funcionalidade")
+               span.input-group-btn
+                  button#inserirFuncionalidade.btn.btn-default
+                     span.glyphicon.glyphicon-plus
+                  button#alterarFuncionalidade.btn.btn-default
+                     span.glyphicon.glyphicon-pencil
+                  button#apagarFuncionalidade.btn.btn-default
+                     span.glyphicon.glyphicon-minus
+
+      div.form-group
+         label.control-label.col-sm-2(for="codigo")
+         div.col-sm-10
+            select#funcionalidades.form-control.input-lg(multiple size="10")
+               if (funcionalidades != "")
+                  for funcionalidade in funcionalidades
+                     option(value="#{funcionalidade.descricao}") #{funcionalidade.descricao}
+
+
+      div.form-group
+         label.control-label.col-sm-2(for="subTipo") SubTipo:
+         div.col-sm-10
+            div.input-group
+               input#subTipo.form-control(type="text" name="subtipo" placeholder="Insira um subtipo de funcionalidade")
+               span.input-group-btn
+                  button#inserirSubTipo.btn.btn-default
+                     span.glyphicon.glyphicon-plus
+                  button#alterarSubTipo.btn.btn-default
+                     span.glyphicon.glyphicon-pencil
+                  button#apagarSubTipo.btn.btn-default
+                     span.glyphicon.glyphicon-minus
+
+      div.form-group
+         label.control-label.col-sm-2(for="codigo")
+         div.col-sm-10
+            select#subTipos.form-control.input-lg(multiple size="10")
+               if (subTipos != "")
+                  for subTipo in subTipos
+                     option(value="#{subTipo}") #{subTipo}
+
+      #modalPerfil.modal
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                  h4.modal-title Mensagem:
+               .modal-body
+                  p #{message}
+               .modal-footer
+                  button.btn.btn-default(type="button" data-dismiss="modal") Fechar
 
 block script
+   script.
+      $('select#funcionalidades').on('click',function(event){
+             $('#descricao').val($('select#funcionalidades option:selected').text());
+             var descricao = $('#descricao').val();
+             rest.get('/funcionalidade/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+      $('select#funcionalidades').on('keyup',function(event){
+             $('#descricao').val($('select#funcionalidades option:selected').text());
+             var descricao = $('#descricao').val();
+             rest.get('/funcionalidade/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+      $('select#subTipos').on('click',function(event){
+             $('#subTipo').val($('select#subTipos option:selected').text());
+      });
+
+      $('select#subTipos').on('keyup',function(event){
+             $('#subTipo').val($('select#subTipos option:selected').text());
+      });
+
+      $('#inserirFuncionalidade').on('click',function(event){
+             var descricao = $('#descricao').val();
+             rest.post('/funcionalidade/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+      $('#alterarFuncionalidade').on('click',function(event){
+             var descricao = $('select#funcionalidades option:selected').text()
+             var novadescricao = $('#descricao').val();
+             rest.put('/funcionalidade/descricao/'+descricao+'/to/'+novadescricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(novadescricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+      $('#apagarFuncionalidade').on('click',function(event){
+             var descricao = $('#descricao').val();
+             rest.del('/funcionalidade/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades option:first-child').attr("selected", "selected");
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+
+      $('#inserirSubTipo').on('click',function(event){
+             var descricao = $('select#funcionalidades option:selected').text();
+             var subtipo = $.trim($('#subTipo').val());
+             rest.post('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+
+      $('#alterarSubTipo').on('click',function(event){
+             var descricao = $('select#funcionalidades option:selected').text();
+             var newsubtipo = $.trim($('#subTipo').val());
+             var subtipo = $('select#subTipos option:selected').text();
+             rest.put('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo+'/to/'+newsubtipo, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+            });
+      });
+
+      $('#apagarSubTipo').on('click',function(event){
+             var descricao = $('select#funcionalidades option:selected').text();
+             var subtipo = $('select#subTipos option:selected').text();
+             rest.del('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#funcionalidades').val(descricao);
+                   $('#descricao').val($('select#funcionalidades option:selected').text());
+                   $('select#funcionalidades').focus();
+             });
+      });
+

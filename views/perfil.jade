@@ -2,43 +2,90 @@ extends layout
 
 block css
    link(rel='stylesheet', href='/stylesheets/jquery-ui/jquery-ui.css')
+   script(src='/stylesheets/datatables/media/js/jquery.js')
+   script.
+      if (#{show}) {
+         $(document).ready(function(){
+            $('#modalPerfil').modal({backdrop: 'static', show: true});
+         });
+      }
 
 block content
-   form.form-horizontal(role="form" method="post" enctype="multipart/form-data")
+   form.form-horizontal(role="form" method="post")
       div.form-group
          label.control-label.col-sm-2(for="codigo") Perfil:
          div.col-sm-10
-            input#insertPerfil.form-control(type="text" name="perfil" required placeholder="Insira um perfil")
+            div.input-group
+               input#descricao.form-control(type="text" name="descricao" placeholder="Insira um perfil")
+               span.input-group-btn
+                  button#salvarPerfil.btn.btn-default
+                     span.glyphicon.glyphicon-plus
+                  button#atualizarPerfil.btn.btn-default
+                     span.glyphicon.glyphicon-pencil
+                  button#apagarPerfil.btn.btn-default
+                     span.glyphicon.glyphicon-minus
+
       div.form-group
          label.control-label.col-sm-2(for="codigo")
          div.col-sm-10
-            select.form-control.input-lg(multiple size="15")
+            select#perfils.form-control.input-lg(multiple size="15")
+               if (perfils != "")
+                  for perfil in perfils
+                     option(id="#{perfil._id}" value="#{perfil.descricao}") #{perfil.descricao}
 
-      div.form-group
-         div.col-sm-offset-2.col-sm-10
-            button#salvar.btn.btn-default(type="submit") Salvar
-            button#apagar.btn.btn-default(type="submit") Apagar
+      #modalPerfil.modal
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                  h4.modal-title Mensagem:
+               .modal-body
+                  p #{message}
+               .modal-footer
+                  button.btn.btn-default(type="button" data-dismiss="modal") Fechar
 
 block script
    script.
-      $('select').on('click',function(){
-         $('#insertPerfil').val($('select option:selected').text());
+      $('select#perfils').on('click',function(event){
+         $('#descricao').val('');
+         $('#descricao').val($('select#perfils option:selected').text());
       });
 
-      $('select').on('keyup',function(){
-         $('#insertPerfil').val($('select option:selected').text());
+      $('select#perfils').on('keyup',function(event){
+         $('#descricao').val('');
+         $('#descricao').val($('select#perfils option:selected').text());
       });
 
-      $(document).on('load',function(){
-         rest.get('/perfil');
+      $('#salvarPerfil').on('click',function(event){
+         var descricao = $.trim($('#descricao').val());
+         rest.post('/perfil/new',{descricao: descricao}, function(data){
+                document.write(data);
+                document.close();
+                $('select#perfils').val(descricao);
+                $('select#perfils').focus();
+                $('#descricao').val($('select#perfils option:selected').text());
+         });
       });
 
-      $('#salvar').on('click',function(event){
-         var Perfil = $("#insertPerfil").val();
-         rest.post('/perfil',{Perfil:Perfil});
+      $('#atualizarPerfil').on('click',function(event){
+         var perfil = $.trim($('#descricao').val());
+         var id = $("select#perfils option:selected").attr('id');
+         rest.put('/perfil/'+id+'/'+perfil,function(data){
+                document.write(data);
+                document.close();
+                $('select#perfils').val(perfil);
+                $('select#perfils').focus();
+                $('#descricao').val($('select#perfils option:selected').text());
+         });
       });
 
-      $('#apagar').on('click',function(event){
-         var Perfil = $("#insertPerfil").val();
-         rest.del('/perfil',{Perfil:Perfil});
+      $('#apagarPerfil').on('click',function(event){
+         var perfil = $("select#perfils option:selected").text();
+         rest.del('/perfil/'+perfil,function(data){
+               document.write(data);
+               document.close();
+               $('select#perfils option:first-child').attr("selected", "selected");
+               $('select#perfils').focus();
+               $('#descricao').val($('select#perfils option:selected').text());
+         });
       });

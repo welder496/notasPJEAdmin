@@ -25,7 +25,7 @@ block content
       div.col-sm-offset-2.col-sm-10
          table#tableCodigo.display
             tbody
-               if results
+               if (results != "")
                   each result in results
                      tr
                         td #{result.codigo}
