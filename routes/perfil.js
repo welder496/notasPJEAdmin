@@ -12,26 +12,26 @@ var showData = function(res, message, show, data){
 
 /* GET home page. */
 router.get('/', function(req, res) {
-   var show = 'false';
-   var message = "";
    perfilRest.getPerfils(function(data){
+	var show = 'false';
+	var message = "";
         showData(res, message, show, data);
    });
 });
 
 router.post('/', function(req, res) {
-   var message = "";
-   var show = 'false';
    perfilRest.getPerfils(function(data){
+	var show = 'false';
+	var message = "";
         showData(res, message, show, data);
    });
 });
 
 router.post('/new', function(req, res){
    var descricao = req.body.descricao;
-   var message="";
-   var show = 'false';
    perfilRest.newPerfil({descricao: descricao},function(data){
+         var message="";
+         var show = 'false';
          if (data.hasOwnProperty('message')) {
                    message = data.message;
                    show = 'true';
@@ -44,10 +44,9 @@ router.post('/new', function(req, res){
 
 router.delete('/:descricao', function(req, res){
    var descricao = req.params.descricao;
-   var message="";
-   var perfils="";
-   var show = 'false';
    perfilRest.deletePerfilByDescricao(descricao,function(data){
+	  var show = 'false';
+	  var message = "";
           if (data.hasOwnProperty('message')) {
                    message = data.message;
                    show='true';
@@ -61,11 +60,10 @@ router.delete('/:descricao', function(req, res){
 router.put('/:id/:descricao', function(req, res){
    var id = req.params.id;
    var descricao = req.params.descricao;
-   var message="";
-   var perfils = "";
-   var show = 'false';
    perfilRest.updatePerfilById(id, descricao, function(data){
-          if (data.hasOwnProperty('message')) {
+	 var show = 'false';
+	 var message = "";
+         if (data.hasOwnProperty('message')) {
                    message = data.message;
                    show = 'true';
          }
