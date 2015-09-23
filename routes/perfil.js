@@ -28,6 +28,8 @@ router.post('/', function(req, res) {
 
 router.post('/new', function(req, res){
    var descricao = req.body.descricao;
+   message = "";
+   show = 'false';
    perfilRest.newPerfil({descricao: descricao},function(data){
              if (data.hasOwnProperty('message')) {
                    message = data.message;
@@ -41,6 +43,8 @@ router.post('/new', function(req, res){
 
 router.delete('/:descricao', function(req, res){
    var descricao = req.params.descricao;
+   message = "";
+   show = 'false';
    perfilRest.deletePerfilByDescricao(descricao,function(data){
              if (data.hasOwnProperty('message')) {
                    message = data.message;
@@ -55,6 +59,8 @@ router.delete('/:descricao', function(req, res){
 router.put('/:id/:descricao', function(req, res){
    var id = req.params.id;
    var descricao = req.params.descricao;
+   message = "";
+   show = 'false';
    perfilRest.updatePerfilById(id, descricao, function(data){
              if (data.hasOwnProperty('message')) {
                    message = data.message;
