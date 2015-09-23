@@ -3,7 +3,7 @@ var router = express.Router();
 var perfilRest = require('perfilrest');
 
 var showData = function(res, message, show, data){
-      var perfis = "";
+      var perfils = "";
       if ((data instanceof Array) && (data.length != 0)) {
              perfils = data;
       }
