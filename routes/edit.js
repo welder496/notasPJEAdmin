@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET funcionalidade subtipo */
-router.get('/:descricao', function(req, res, next) {
+router.get('/funcionalidade/:descricao', function(req, res, next) {
       /* Do not change this object */
       var descricao = req.params.descricao;
       var perfils = "";
@@ -107,7 +107,6 @@ router.post('/', function(req, res, next){
                           if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                 subTipos = data.subtipos;
                           }
-                         console.log(perfils+" "+funcionalidades+" "+subTipos);
                          res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show});
                    });
              });
