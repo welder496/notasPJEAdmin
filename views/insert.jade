@@ -197,8 +197,8 @@ block script
       });
 
       $('#insertIssue').on('keyup',function(event){
-             var numero = $(this).val().replace(/[^\d]/g,'');
-             $('#insertIssue').val(numero);
+             var numero = $(this).val().replace(/[^a-zA-Z\-\d]/g,'');
+             $('#insertIssue').val(numero.toUpperCase());
       });
 
       $('#insertIssue').on('blur', function(event){
