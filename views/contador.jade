@@ -1,0 +1,15 @@
+extends layout
+
+block css
+   link(rel='stylesheet', href='/stylesheets/jquery-ui/jquery-ui.css')
+   script(src='/stylesheets/datatables/media/js/jquery.js')
+   script.
+      if (#{show}) {
+         $(document).ready(function(){
+            $('#modalPerfil').modal({backdrop: 'static', show: true});
+         });
+      }
+
+block content
+
+block script

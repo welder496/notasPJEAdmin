@@ -7,6 +7,7 @@ var multer = require('multer');
 
 var routes = require('./routes/index');
 var edit = require('./routes/edit');
+var contador = require('./routes/contador');
 var insert = require('./routes/insert');
 var searchForTags = require('./routes/searchForTags');
 var searchForCodigo = require('./routes/searchForCodigo');
@@ -38,6 +39,7 @@ app.use('/', routes);
 app.use('/index', routes);
 app.use('/insert', insert);
 app.use('/edit',edit);
+app.use('/contador',contador);
 app.use('/searchForTags', searchForTags);
 app.use('/searchForCodigo', searchForCodigo);
 app.use('/searchForNota', searchForNota);
