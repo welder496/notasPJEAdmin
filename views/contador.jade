@@ -6,10 +6,169 @@ block css
    script.
       if (#{show}) {
          $(document).ready(function(){
-            $('#modalPerfil').modal({backdrop: 'static', show: true});
+            $('#modalContador').modal({backdrop: 'static', show: true});
          });
       }
 
 block content
+   form.form-horizontal(role="form" method="post")
+      div.form-group
+         label.control-label.col-sm-2(for="contadores") Contadores:
+         div.col-sm-10
+            select#contadores.form-control.input-lg(multiple size="10")
+               if (contadores != "")
+                  for contador in contadores
+                     option(value="#{contador.descricao}") #{contador.descricao}
+
+      div.form-group
+         label.control-label.col-sm-2(for="descrição") Descrição:
+         div.col-sm-4
+            input#descricao.form-control(type="text" name="descricao" required value="#{descricao}")
+
+      div.form-group
+         label.control-label.col-sm-2(for="prefixo") Prefixo:
+         div.col-sm-4
+            input#prefixo.form-control(type="text" name="prefixo" required value="#{prefixo}")
+
+      div.form-group
+         label.control-label.col-sm-2(for="prefixo") Contador:
+         div.col-sm-4
+            div.input-group
+               input#contador.form-control(type="text" name="contador" required value="#{contador}")
+               span.input-group-btn
+                  button#incContador.btn.btn-default
+                     span.glyphicon.glyphicon-plus
+                  button#decContador.btn.btn-default
+                     span.glyphicon.glyphicon-minus
+                  button#reInitContador.btn.btn-default
+                     span.glyphicon.glyphicon-record
+
+      div.form-group
+         label.control-label.col-sm-2(for="prefixo") Formatação:
+         div.col-sm-4
+            input#casas.form-control(type="text" name="casas" required value="#{casas}")
+
+      div.form-group
+         div.col-sm-offset-2.col-sm-10
+            button#salvar.btn.btn-default(type="submit") Salvar
+            button#atualizar.btn.btn-default(type="submit") Atualizar
+            button#apagar.btn.btn-default(type="submit") Apagar
+
+      #modalContador.modal
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                  h4.modal-title Mensagem:
+               .modal-body
+                  p #{message}
+               .modal-footer
+                  button.btn.btn-default(data-dismiss="modal") Fechar
 
 block script
+   script.
+      $('#incContador').on('click',function(event){
+            var prefixo = $('#prefixo').val();
+            var descricao = $('#descricao').val();
+            rest.put('/contador/prefixo/'+prefixo+'/inc', function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+            });
+      });
+
+      $('#decContador').on('click',function(event){
+            var prefixo = $('#prefixo').val();
+            var descricao = $('#descricao').val();
+            rest.put('/contador/prefixo/'+prefixo+'/dec', function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+            });
+      });
+
+      $('#reInitContador').on('click',function(event){
+            var prefixo = $('#prefixo').val();
+            var descricao = $('#descricao').val();
+            rest.put('/contador/prefixo/'+prefixo+'/reset', function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+            });
+      });
+
+      $('#salvar').on('click',function(event){
+            var prefixo = $('#prefixo').val();
+            var descricao = $('#descricao').val();
+            rest.post('/contador/new',{prefixo: prefixo, descricao: descricao},function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+            });
+      });
+
+      $('#contador').on('keyup', function(event){
+         var numero = $(this).val().replace(/[^\d]/g,'');
+         $('#contador').val(numero);
+      });
+
+      $('#casas').on('keyup', function(event){
+         var numero = $(this).val().replace(/[^\d]/g,'');
+         $('#casas').val(numero);
+      });
+
+      $('#contadores').on('click',function(event){
+             $('#descricao').val($('select#contadores option:selected').text());
+             var descricao = $('#descricao').val();
+             rest.get('/contador/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+             });
+      });
+
+      $('#contadores').on('keyup', function(event){
+             $('#descricao').val($('select#contadores option:selected').text());
+             var descricao = $('#descricao').val();
+             rest.get('/contador/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(descricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+             });
+      });
+
+      $('#atualizar').on('click',function(event){
+             var descricao = $('select#contadores option:selected').text();
+             var novadescricao = $('#descricao').val();
+             var prefixo = $('#prefixo').val();
+             var contador =$('#contador').val();
+             var casas = $('#casas').val();
+             rest.put('/contador/descricao/'+descricao, {descricao: novadescricao, prefixo: prefixo, contador: contador, casas: casas}, function(data){
+                   document.write(data);
+                   document.close();
+                   $('select#contadores').val(novadescricao);
+                   $('#descricao').val($('select#contadores option:selected').text());
+                   $('select#contadores').focus();
+             });
+      });
+
+      $('#apagar').on('click',function(event){
+             $('#descricao').val($('select#contadores option:selected').text());
+             var descricao = $('#descricao').val();
+             rest.del('/contador/descricao/'+descricao, function(data){
+                   document.write(data);
+                   document.close();
+             });
+      });
