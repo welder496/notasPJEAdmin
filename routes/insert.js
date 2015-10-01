@@ -3,68 +3,71 @@ var router = express.Router();
 var notasRest = require('notasrest');
 var perfilRest = require('perfilrest');
 var funcionalidadeRest = require('funcionalidaderest');
+var contadorRest = require('contadorrest');
 var rest = require('restler');
 var fs = require('fs');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
       var perfils = "";
       var codigo = "";
       var nota = "";
       var tags = "";
       var message = "";
+      var contadores = "";
       var funcionalidades = "";
       var descricao = "";
       var subTipos = "";
       var show = 'false';
-      perfilRest.getPerfils(function(data){
+      contadorRest.getContadores(function(data){
              if ((data instanceof Array) && (data.length != 0)) {
-                    perfils = data;
+                   contadores = data;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
+            perfilRest.getPerfils(function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
-                          funcionalidades = data;
-                          descricao = funcionalidades[0].descricao;
+                          perfils = data;
                    }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
-                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
-                                subTipos = data.subtipos;
-                          }
-                          res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                   funcionalidadeRest.getFuncionalidades(function(data){
+                         if ((data instanceof Array) && (data.length != 0)) {
+                                funcionalidades = data;
+                                descricao = funcionalidades[0].descricao;
+                         }
+                         funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                                if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                      subTipos = data.subtipos;
+                                }
+                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, contadores: contadores, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                         });
                    });
-             });
+            });
+      });
+});
+
+/* GET contador */
+router.get('/prefixo/:prefixo/next', function(req, res) {
+      var prefixo = req.params.prefixo;
+      contadorRest.getNextContadorByPrefixo(prefixo, function(data){
+            res.send(data);
       });
 });
 
 /* GET funcionalidade subtipo */
-router.get('/funcionalidade/:descricao', function(req, res, next) {
+router.get('/funcionalidade/:descricao', function(req, res) {
       /* Do not change this object */
       var descricao = req.params.descricao;
       var perfils = "";
-      var message = "";
       var funcionalidades = "";
       var subTipos = "";
-      var show = "false";
-      perfilRest.getPerfils(function(data){
-             if ((data instanceof Array) && (data.length != 0)) {
-                    perfils = data;
+      funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+             if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                   subTipos = data.subtipos;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
-                   if ((data instanceof Array) && (data.length != 0)) {
-                          funcionalidades = data;
-                   }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
-                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
-                                subTipos = data.subtipos;
-                          }
-                          res.send(subTipos);
-                   });
-             });
+             res.send(subTipos);
       });
 });
 
 /* POST home page */
-router.post('/',function(req, res, next){
+router.post('/',function(req, res){
    /* Do not change this object */
    var codigo = "";
    var nota = "";
@@ -72,6 +75,7 @@ router.post('/',function(req, res, next){
    var perfils = "";
    var message = "";
    var funcionalidades = "";
+   var contadores = "";
    var subTipos = "";
    var descricao = "";
    var show = "false";
@@ -117,23 +121,28 @@ router.post('/',function(req, res, next){
              message = data.message;
              show = 'true';
        }
-       perfilRest.getPerfils(function(data){
+      contadorRest.getContadores(function(data){
              if ((data instanceof Array) && (data.length != 0)) {
-                   perfils = data;
+                   contadores = data;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
+             perfilRest.getPerfils(function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
-                          funcionalidades = data;
-                          descricao = funcionalidades[0].descricao;
+                         perfils = data;
                    }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
-                          if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
-                                subTipos = data.subtipos;
-                          }
-                          res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                   funcionalidadeRest.getFuncionalidades(function(data){
+                         if ((data instanceof Array) && (data.length != 0)) {
+                                funcionalidades = data;
+                                descricao = funcionalidades[0].descricao;
+                         }
+                         funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                                if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                      subTipos = data.subtipos;
+                                }
+                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, contadores: contadores, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                         });
                    });
              });
-       });
+      });
    });
 });
 

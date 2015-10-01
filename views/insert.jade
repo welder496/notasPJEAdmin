@@ -24,14 +24,10 @@ block content
                   ul#TipoNota.dropdown-menu
                       li
                         a(href="#") Nenhum Tipo
-                      li
-                        a(href="#") Regra de Negócio
-                      li
-                        a(href="#") Implementação
-                      li
-                        a(href="#") Caso de Uso
-                      li
-                        a(href="#") Necessidade Negocial
+                      if (contadores != "")
+                          for contador in contadores
+                             li
+                                a(href="#" value="#{contador.prefixo}") #{contador.descricao}
 
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
@@ -102,6 +98,10 @@ block script
    script(src='/stylesheets/editors5/dist/bootstrap3-wysihtml5.js')
    script(src='/javascripts/componentsInit/textAreaEditor.js')
    script.
+      $('#insertCodigo').on('blur', function(event){
+            $('#insertNota').focus();
+      });
+
       $('#insertTags').on('tokenfield:createtoken', function(event){
              var existingTokens = $(this).tokenfield('getTokens');
              $.each(existingTokens, function(index, token){
@@ -178,22 +178,14 @@ block script
 
       $("#TipoNota.dropdown-menu li a").click(function(event){
              var selText = $(this).text();
+             var prefixo = $(this).attr('value');
              $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-             if (selText == 'Regra de Negócio') {
-                  $('#insertCodigo').val('RN-');
-             } else
-             if (selText == 'Implementação') {
-                  $('#insertCodigo').val('IMP-');
-             } else
-             if (selText == 'Caso de Uso') {
-                  $('#insertCodigo').val('UC-');
-             } else
-             if (selText == 'Necessidade Negocial') {
-                  $('#insertCodigo').val('NEC-');
-             } else {
-                  $('#insertCodigo').val('');
+             if (selText != "Nenhum Tipo") {
+                   rest.get('/insert/prefixo/'+prefixo+'/next', function(data){
+                          $('#insertCodigo').val(data);
+                   });
+                   $('#insertTags').tokenfield('createToken', selText);
              }
-             $('#insertTags').tokenfield('createToken', selText);
       });
 
       $('#insertIssue').on('keyup',function(event){
