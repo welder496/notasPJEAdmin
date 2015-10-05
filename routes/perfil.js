@@ -15,12 +15,16 @@ var showData = function(res, message, show, data){
 
 /* GET home page. */
 router.get('/', function(req, res) {
+   message = "";
+   show = 'false';
    perfilRest.getPerfils(function(data){
        showData(res, message, show, data);
    });
 });
 
 router.post('/', function(req, res) {
+   message = "";
+   show = 'false';
    perfilRest.getPerfils(function(data){
        showData(res, message, show, data);
    });
