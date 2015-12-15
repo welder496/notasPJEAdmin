@@ -1,9 +1,9 @@
 extends layout
 
 block css
-   link(rel='stylesheet' href='/stylesheets/jquery-ui/jquery-ui.css')
-   link(rel='stylesheet' href='/stylesheets/datatables/media/css/jquery.dataTables.css')
-   script(src='/stylesheets/datatables/media/js/jquery.js')
+   link(rel='stylesheet' href='/stylesheets/jquery-ui.min.css')
+   link(rel='stylesheet' href='/stylesheets/jquery.dataTables.min.css')
+   script(src='/javascripts/jquery.min.js')
    script.
       if (#{show}) {
          $(document).ready(function(){
@@ -45,26 +45,6 @@ block content
                button.btn.btn-default(type="button" data-dismiss="modal") Fechar
 
 block script
-   script(src='/stylesheets/datatables/media/js/jquery.dataTables.js')
-   script(src='/javascripts/componentsInit/tables.js')
-   script.
-      $(window).on('load',function(event){
-         $("#searchNota").focus();
-      });
-
-      $('#nota').on('input', function(event){
-         $("#searchNota").focus();
-      });
-
-      $('#nota').on('blur',function(event){
-         $("#searchNota").focus();
-      });
-
-      $('#buttonNota').on('click', function(event){
-         $("#searchNota").focus();
-      });
-
-      $("#searchNota").on('keyup',function(event){
-         var nota = $(this).val().replace(/[^a-zA-Z\u00C0-\u00ff0-9\-\.\!\?\:\;\," "]+/g,'');
-         $(this).val(nota);
-      });
+   script(src='/javascripts/jquery.dataTables.min.js')
+   script(src='/javascripts/componentsInit/tables.min.js')
+   script(src='/javascripts/components/searchForNota.min.js')

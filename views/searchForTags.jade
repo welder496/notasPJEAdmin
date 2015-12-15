@@ -1,10 +1,10 @@
 extends layout
 
 block css
-   link(rel='stylesheet' href='/stylesheets/jquery-ui/jquery-ui.css')
-   link(rel='stylesheet' href='/stylesheets/datatables/media/css/jquery.dataTables.css')
-   link(rel='stylesheet' href='/stylesheets/tokenfield/css/bootstrap-tokenfield.css')
-   script(src='/stylesheets/datatables/media/js/jquery.js')
+   link(rel='stylesheet' href='/stylesheets/jquery-ui.min.css')
+   link(rel='stylesheet' href='/stylesheets/jquery.dataTables.min.css')
+   link(rel='stylesheet' href='/stylesheets/bootstrap-tokenfield.min.css')
+   script(src='/javascripts/jquery.min.js')
    script.
       if (#{show}) {
          $(document).ready(function(){
@@ -46,42 +46,8 @@ block content
             .modal-footer
                button.btn.btn-default(type="button" data-dismiss="modal") Fechar
 block script
-   script(src='/stylesheets/tokenfield/bootstrap-tokenfield.js')
-   script(src='/javascripts/componentsInit/tokenfields.js')
-   script(src='/stylesheets/datatables/media/js/jquery.dataTables.js')
-   script(src='/javascripts/componentsInit/tables.js')
-   script.
-      $(window).on('load',function(event){
-          $("#searchTags").focus();
-      });
-
-      /*Identifies the search*/
-      $('#buttonOR').on('click', function(event){
-          $("#choosenButton").val("OR");
-      });
-
-      /*Identifies the search*/
-      $('#buttonAND').on('click', function(event){
-          $("#choosenButton").val("AND");
-      });
-
-      $("#searchTags").on('keyup',function(event){
-         var searchTags = $(this).val().replace(/[^a-zA-Z0-9\-]+/g,'');
-         $(this).val(searchTags.toUpperCase());
-      });
-
-      $(".btn.btn-default.btn-xs").on('click',function(event){
-          $('#searchTags').tokenfield('createToken',$(this).attr('id'));
-          var search = $("#searchTags").val();
-          var vector = search.split(',');
-          var last = $(this).attr('id');
-
-          for (var i=0; i < vector.length - 1; i++){
-                   if (vector[i].trim() == last.trim()) {
-                          vector.pop();
-                   }
-          }
-
-          $('#searchTags').tokenfield('setTokens',vector);
-      })
-
+   script(src='/javascripts/bootstrap-tokenfield.min.js')
+   script(src='/javascripts/componentsInit/tokenfields.min.js')
+   script(src='/javascripts/jquery.dataTables.min.js')
+   script(src='/javascripts/componentsInit/tables.min.js')
+   script(src='/javascripts/components/searchForTags.min.js')

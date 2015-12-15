@@ -1,9 +1,9 @@
 extends layout
 
 block css
-   link(rel='stylesheet' href='/stylesheets/datatables/media/css/jquery.dataTables.css')
-   link(rel='stylesheet' href='/stylesheets/jquery-ui/jquery-ui.css')
-   script(src='/stylesheets/datatables/media/js/jquery.js')
+   link(rel='stylesheet' href='/stylesheets/jquery.dataTables.min.css')
+   link(rel='stylesheet' href='/stylesheets/jquery-ui.min.css')
+   script(src='/javascripts/jquery.min.js')
    script.
       if (#{show}) {
          $(document).ready(function(){
@@ -43,17 +43,9 @@ block content
             .modal-footer
                button.btn.btn-default(type="button" data-dismiss="modal") Fechar
 block script
-   script(src='/stylesheets/datatables/media/js/jquery.dataTables.js')
-   script(src='/javascripts/componentsInit/tables.js')
-   script.
-      $(window).on('load',function(event){
-         $("#searchCodigo").focus();
-      });
-
-      $("#searchCodigo").on('keyup',function(event){
-         var codigo = $(this).val().replace(/[^a-zA-Z0-9\-\/]/g,'');
-         $(this).val(codigo.toUpperCase());
-      });
+   script(src='/javascripts/jquery.dataTables.min.js')
+   script(src='/javascripts/componentsInit/tables.min.js')
+   script(src='/javascripts/components/searchForCodigo.min.js')
 
 
 

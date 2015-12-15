@@ -1,11 +1,11 @@
 extends layout
 
 block css
-   link(rel='stylesheet', href='/stylesheets/tokenfield/css/bootstrap-tokenfield.css')
-   link(rel='stylesheet', href='/stylesheets/jquery-ui/jquery-ui.css')
-   link(rel='stylesheet', href='/stylesheets/editors5/dist/bootstrap3-wysihtml5.css')
-   link(rel='stylesheet', href='/stylesheets/editors5/dist/bootstrap3-wysihtml5-editor.css')
-   script(src='/stylesheets/datatables/media/js/jquery.js')
+   link(rel='stylesheet', href='/stylesheets/bootstrap-tokenfield.min.css')
+   link(rel='stylesheet', href='/stylesheets/jquery-ui.min.css')
+   link(rel='stylesheet', href='/stylesheets/bootstrap3-wysihtml5.min.css')
+   link(rel='stylesheet', href='/stylesheets/bootstrap3-wysihtml5-editor.min.css')
+   script(src='/javascripts/jquery.min.js')
    script.
       if (#{show}) {
          $(document).ready(function(){
@@ -91,111 +91,9 @@ block content
                   button.btn.btn-default(data-dismiss="modal") Fechar
 
 block script
-   script(src='/stylesheets/tokenfield/bootstrap-tokenfield.js')
-   script(src='/javascripts/componentsInit/tokenfields.js')
-   script(src='/javascripts/components/insertCodigoKeyUp.js')
-   script(src='/stylesheets/editors5/dist/wysihtml5x-toolbar.min.js')
-   script(src='/stylesheets/editors5/dist/bootstrap3-wysihtml5.js')
-   script(src='/javascripts/componentsInit/textAreaEditor.js')
-   script.
-      $('#insertCodigo').on('blur', function(event){
-            $('#insertNota').focus();
-      });
-
-      $('#insertTags').on('tokenfield:createtoken', function(event){
-             var existingTokens = $(this).tokenfield('getTokens');
-             $.each(existingTokens, function(index, token){
-                   if (token.value === event.attrs.value) {
-                          event.preventDefault();
-                   }
-             });
-      });
-
-      $('select#perfil').on('click',function(event){
-             $('#insertTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
-      });
-
-      $('select#perfil').on('keypress',function(event){
-             var key = event.which || event.keyCode;
-             if (event.keyCode == 13) {
-                    $('#insertTags').tokenfield('createToken','Perfil: '+$('select#perfil option:selected').text());
-             }
-             event.preventDefault();
-      });
-
-      $('select#funcionalidade').on('click',function(event){
-             var descricao = $('select#funcionalidade option:selected').text();
-             rest.get('/insert/funcionalidade/'+descricao, function(data){
-                   $('select#subTipos').empty();
-                   $.each(data, function(i, value){
-                          $('select#subTipos').append($('<option>').text(value).attr('value', value));
-                   });
-             });
-             event.preventDefault();
-      });
-
-      $('select#funcionalidade').on('keydown',function(event){
-             var descricao = $('select#funcionalidade option:selected').text();
-             rest.get('/insert/funcionalidade/'+descricao, function(data){
-                   $('select#subTipos').empty();
-                   $.each(data, function(i, value){
-                         $('select#subTipos').append($('<option>').text(value).attr('value', value));
-                   });
-             });
-      });
-
-      $('select#funcionalidade').on('keypress',function(event){
-             var descricao = $('select#funcionalidade option:selected').text();
-             rest.get('/insert/funcionalidade/'+descricao, function(data){
-                   $('select#subTipos').empty();
-                   $.each(data, function(i, value){
-                         $('select#subTipos').append($('<option>').text(value).attr('value', value));
-                   });
-             });
-             event.preventDefault();
-      });
-
-      $('select#subTipos').on('click',function(event){
-             var funcionalidade = $('select#funcionalidade option:selected').text();
-             var subTipo = $('select#subTipos option:selected').text();
-             if ((funcionalidade != "") && (subTipo != "")) {
-                    $('#insertTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
-             }
-             event.preventDefault();
-      });
-
-      $('select#subTipos').on('keypress',function(event){
-             var key = event.which || event.keyCode;
-             if (key == 13) {
-                    var funcionalidade = $('select#funcionalidade option:selected').text();
-                    var subTipo = $('select#subTipos option:selected').text();
-                   if ((funcionalidade != "") && (subTipo != "")) {
-                         $('#insertTags').tokenfield('createToken','Funcionalidade: '+funcionalidade+'>>'+subTipo);
-                   }
-             }
-             event.preventDefault();
-      });
-
-      $("#TipoNota.dropdown-menu li a").click(function(event){
-             var selText = $(this).text();
-             var prefixo = $(this).attr('value');
-             $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
-             if (selText != "Nenhum Tipo") {
-                   rest.get('/insert/prefixo/'+prefixo+'/next', function(data){
-                          $('#insertCodigo').val(data);
-                   });
-                   $('#insertTags').tokenfield('createToken', selText);
-             }
-      });
-
-      $('#insertIssue').on('keyup',function(event){
-             var numero = $(this).val().replace(/[^a-zA-Z\-\d]/g,'');
-             $('#insertIssue').val(numero.toUpperCase());
-      });
-
-      $('#insertIssue').on('blur', function(event){
-             var numero = $('#insertIssue').val();
-             if (numero != ""){
-                   $('#insertTags').tokenfield('createToken', 'Issue: '+numero);
-             }
-      });
+   script(src='/javascripts/bootstrap-tokenfield.min.js')
+   script(src='/javascripts/componentsInit/tokenfields.min.js')
+   script(src='/javascripts/wysihtml5x-toolbar.min.js')
+   script(src='/javascripts/bootstrap3-wysihtml5.min.js')
+   script(src='/javascripts/componentsInit/textAreaEditor.min.js')
+   script(src='/javascripts/components/insert.min.js')
