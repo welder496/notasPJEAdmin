@@ -1,0 +1,28 @@
+extends layout
+
+block css
+   link(rel='stylesheet', href='/stylesheets/bootstrap-tokenfield.min.css')
+   link(rel='stylesheet', href='/stylesheets/jquery-ui.min.css')
+   link(rel='stylesheet', href='/stylesheets/bootstrap3-wysihtml5.min.css')
+   link(rel='stylesheet', href='/stylesheets/bootstrap3-wysihtml5-editor.min.css')
+
+block content
+      #loginModal.modal.show(role="dialog" tabindex="-1" aria-hidden="true")
+         .modal-dialog
+            .modal-content
+               .modal-header
+                  //button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
+                  h1.text-center Login
+               .modal-body
+                  form.form.col-md-12.center-block(role="form" method="post")
+                     div.form-group
+                        input#username.form-control.input-lg(type="text" name="username" placeholder="Nome do usuário")
+                     div.form-group
+                        input#password.form-control.input-lg(type="password" name="password" placeholder="Senha do usuário")
+                     div.form-group
+                        button.btn.btn-primary.btn-lg.btn-block(type="submit") Logar
+               .modal-footer
+
+
+
+block script

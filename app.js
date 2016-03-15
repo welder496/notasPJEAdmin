@@ -1,9 +1,13 @@
+//global token
+global.__token = "";
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 
+var login = require('./routes/login');
 var routes = require('./routes/index');
 var edit = require('./routes/edit');
 var contador = require('./routes/contador');
@@ -33,6 +37,7 @@ app.use(multer({dest: './uploads/',
 }));
 app.use(express.static(path.join(__dirname, '/public')));
 
+app.use('/login', login);
 app.use('/', routes);
 app.use('/index', routes);
 app.use('/insert', insert);
