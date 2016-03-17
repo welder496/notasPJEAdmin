@@ -6,9 +6,11 @@ var funcionalidadeRest = require('funcionalidaderest');
 var contadorRest = require('contadorrest');
 var rest = require('restler');
 var fs = require('fs');
+var token = global.__token;
 
 /* GET home page. */
 router.get('/', function(req, res) {
+      token = global.__token;
       var perfils = "";
       var codigo = "";
       var nota = "";
@@ -19,24 +21,24 @@ router.get('/', function(req, res) {
       var descricao = "";
       var subTipos = "";
       var show = 'false';
-      contadorRest.getContadores(function(data){
+      contadorRest.getContadores(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                    contadores = data;
              }
-            perfilRest.getPerfils(function(data){
+            perfilRest.getPerfils(token, function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
                           perfils = data;
                    }
-                   funcionalidadeRest.getFuncionalidades(function(data){
+                   funcionalidadeRest.getFuncionalidades(token, function(data){
                          if ((data instanceof Array) && (data.length != 0)) {
                                 funcionalidades = data;
                                 descricao = funcionalidades[0].descricao;
                          }
-                         funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                         funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                                 if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                       subTipos = data.subtipos;
                                 }
-                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, contadores: contadores, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, contadores: contadores, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show, token: token});
                          });
                    });
             });
@@ -45,20 +47,22 @@ router.get('/', function(req, res) {
 
 /* GET contador */
 router.get('/prefixo/:prefixo/next', function(req, res) {
+      token = global.__token;
       var prefixo = req.params.prefixo;
-      contadorRest.getNextContadorByPrefixo(prefixo, function(data){
+      contadorRest.getNextContadorByPrefixo(token, prefixo, function(data){
             res.send(data);
       });
 });
 
 /* GET funcionalidade subtipo */
 router.get('/funcionalidade/:descricao', function(req, res) {
+      token = global.__token;
       /* Do not change this object */
       var descricao = req.params.descricao;
       var perfils = "";
       var funcionalidades = "";
       var subTipos = "";
-      funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+      funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
              if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                    subTipos = data.subtipos;
              }
@@ -68,6 +72,7 @@ router.get('/funcionalidade/:descricao', function(req, res) {
 
 /* POST home page */
 router.post('/',function(req, res){
+   token = req.body.token;
    /* Do not change this object */
    var codigo = "";
    var nota = "";
@@ -116,34 +121,35 @@ router.post('/',function(req, res){
    if (! found) {
       notadata['tags']=notadata['codigo']+','+notadata['tags'];
    }
-   notasRest.newNota(notadata,function(data){
+   notasRest.newNota(token, notadata,function(data){
        if (data.hasOwnProperty('message')){
              message = data.message;
              show = 'true';
        }
-      contadorRest.getContadores(function(data){
+      contadorRest.getContadores(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                    contadores = data;
              }
-             perfilRest.getPerfils(function(data){
+             perfilRest.getPerfils(token, function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
                          perfils = data;
                    }
-                   funcionalidadeRest.getFuncionalidades(function(data){
+                   funcionalidadeRest.getFuncionalidades(token, function(data){
                          if ((data instanceof Array) && (data.length != 0)) {
                                 funcionalidades = data;
                                 descricao = funcionalidades[0].descricao;
                          }
-                         funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                         funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                                 if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                       subTipos = data.subtipos;
                                 }
-                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, contadores: contadores, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show});
+                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, contadores: contadores, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show, token: token});
                          });
                    });
              });
       });
    });
+   global.__token = token;
 });
 
 module.exports = router;

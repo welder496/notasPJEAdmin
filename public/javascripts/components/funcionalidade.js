@@ -32,7 +32,8 @@
 
       $('#inserirFuncionalidade').on('click',function(event){
              var descricao = $('#descricao').val();
-             rest.post('/funcionalidade/descricao/'+descricao, function(data){
+             var token = $('#token').attr('value');
+             rest.post('/funcionalidade/descricao/'+descricao, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades').val(descricao);
@@ -44,7 +45,8 @@
       $('#alterarFuncionalidade').on('click',function(event){
              var descricao = $('select#funcionalidades option:selected').text()
              var novadescricao = $('#descricao').val();
-             rest.put('/funcionalidade/descricao/'+descricao+'/to/'+novadescricao, function(data){
+             var token = $('#token').attr('value');
+             rest.put('/funcionalidade/descricao/'+descricao+'/to/'+novadescricao, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades').val(novadescricao);
@@ -55,7 +57,8 @@
 
       $('#apagarFuncionalidade').on('click',function(event){
              var descricao = $('#descricao').val();
-             rest.del('/funcionalidade/descricao/'+descricao, function(data){
+             var token = $('#token').attr('value');
+             rest.del('/funcionalidade/descricao/'+descricao, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades option:first-child').attr("selected", "selected");
@@ -68,7 +71,8 @@
       $('#inserirSubTipo').on('click',function(event){
              var descricao = $('select#funcionalidades option:selected').text();
              var subtipo = $.trim($('#subTipo').val());
-             rest.post('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, function(data){
+             var token = $('#token').attr('value');
+             rest.post('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades').val(descricao);
@@ -81,7 +85,8 @@
              var descricao = $('select#funcionalidades option:selected').text();
              var newsubtipo = $.trim($('#subTipo').val());
              var subtipo = $('select#subTipos option:selected').text();
-             rest.put('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo+'/to/'+newsubtipo, function(data){
+             var token = $('#token').attr('value');
+             rest.put('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo+'/to/'+newsubtipo, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades').val(descricao);
@@ -93,7 +98,8 @@
       $('#apagarSubTipo').on('click',function(event){
              var descricao = $('select#funcionalidades option:selected').text();
              var subtipo = $('select#subTipos option:selected').text();
-             rest.del('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, function(data){
+             var token = $('#token').attr('value');
+             rest.del('/funcionalidade/descricao/'+descricao+'/subtipo/'+subtipo, {token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#funcionalidades').val(descricao);

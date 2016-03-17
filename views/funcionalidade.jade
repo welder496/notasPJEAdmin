@@ -12,6 +12,7 @@ block css
 
 block content
    form.form-horizontal(role="form" method="post")
+      input#token(type="hidden" name="token" value='#{token}')
       div.form-group
          label.control-label.col-sm-2(for="codigo") Funcionalidade:
          div.col-sm-10
@@ -55,7 +56,7 @@ block content
                   for subTipo in subTipos
                      option(value="#{subTipo}") #{subTipo}
 
-      #modalPerfil.modal
+      #modalFuncionalidade.modal
          .modal-dialog
             .modal-content
                .modal-header

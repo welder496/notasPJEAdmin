@@ -6,8 +6,11 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var restler = require('restler');
+var netConfig = require('netconfig');
 
 var login = require('./routes/login');
+var logoff = require('./routes/logoff');
 var routes = require('./routes/index');
 var edit = require('./routes/edit');
 var contador = require('./routes/contador');
@@ -38,6 +41,19 @@ app.use(multer({dest: './uploads/',
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/login', login);
+app.use('/logoff', logoff);
+app.use(function(req, res, next){
+    restler.get("http://"+netConfig.getHost()+':'+netConfig.getPort()+'/notas/notas/first/1',{
+          accessToken: global.__token
+    })
+    .on('complete', function(result){
+           if (result.message === "Token inválido!!") {
+                 res.redirect('/login');
+           } else {
+                 next();
+           }
+    });
+});
 app.use('/', routes);
 app.use('/index', routes);
 app.use('/insert', insert);
@@ -82,6 +98,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

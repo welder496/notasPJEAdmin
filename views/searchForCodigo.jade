@@ -13,6 +13,7 @@ block css
 
 block content
    form.form-horizontal(role="form" id="formCodigo" method="post")
+      input#token(type="hidden" name="token" value='#{token}')
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
          div.col-sm-2

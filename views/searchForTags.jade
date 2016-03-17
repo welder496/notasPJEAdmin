@@ -15,6 +15,7 @@ block css
 
 block content
    form.form-horizontal(role="form" id="formTags" method="post")
+      input#token(type="hidden" name="token" value='#{token}')
       div.form-group
          label.control-label.col-sm-2(for="tags") Tags:
          div.col-sm-10

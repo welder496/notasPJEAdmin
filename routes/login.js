@@ -4,7 +4,6 @@ var netConfig = require('netconfig');
 var restler = require('restler');
 
 router.get('/', function(req,res){
-   global.__token = "";
    res.render('login');
 });
 
@@ -19,17 +18,20 @@ router.post('/', function(req,res,next){
          if (localdata.token !== undefined) {
                global.__token = localdata.token;
                res.redirect('/');
-         }
+         } else
          if (localdata.message !== undefined) {
+               global.__token = "";
+               res.redirect('/login');
+         } else {
                global.__token = "";
                res.redirect('/login');
          }
    })
-   .on('error', function(responde, error){
+   .on('error', function(response, error){
          global.__token = "";
          res.redirect('/login');
    });
-   res.redirect('/login');
+   return;
 });
 
 module.exports = router;

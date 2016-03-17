@@ -1,7 +1,8 @@
       $('#incContador').on('click',function(event){
             var prefixo = $('#prefixo').val();
             var descricao = $('#descricao').val();
-            rest.put('/contador/prefixo/'+prefixo+'/inc', function(data){
+            var token = $('#token').attr('value');
+            rest.put('/contador/prefixo/'+prefixo+'/inc',{token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#contadores').val(descricao);
@@ -13,7 +14,8 @@
       $('#decContador').on('click',function(event){
             var prefixo = $('#prefixo').val();
             var descricao = $('#descricao').val();
-            rest.put('/contador/prefixo/'+prefixo+'/dec', function(data){
+            var token = $('#token').attr('value');
+            rest.put('/contador/prefixo/'+prefixo+'/dec',{token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#contadores').val(descricao);
@@ -25,7 +27,8 @@
       $('#reInitContador').on('click',function(event){
             var prefixo = $('#prefixo').val();
             var descricao = $('#descricao').val();
-            rest.put('/contador/prefixo/'+prefixo+'/reset', function(data){
+            var token = $('#token').attr('value');
+            rest.put('/contador/prefixo/'+prefixo+'/reset',{token: token}, function(data){
                    document.write(data);
                    document.close();
                    $('select#contadores').val(descricao);
@@ -37,7 +40,8 @@
       $('#salvar').on('click',function(event){
             var prefixo = $('#prefixo').val();
             var descricao = $('#descricao').val();
-            rest.post('/contador/new',{prefixo: prefixo, descricao: descricao},function(data){
+            var token = $('#token').attr('value');
+            rest.post('/contador/new',{token: token, prefixo: prefixo, descricao: descricao},function(data){
                    document.write(data);
                    document.close();
                    $('select#contadores').val(descricao);
@@ -86,7 +90,8 @@
              var prefixo = $('#prefixo').val();
              var contador =$('#contador').val();
              var casas = $('#casas').val();
-             rest.put('/contador/descricao/'+descricao, {descricao: novadescricao, prefixo: prefixo, contador: contador, casas: casas}, function(data){
+             var token = $('#token').attr('value');
+             rest.put('/contador/descricao/'+descricao, {token: token, descricao: novadescricao, prefixo: prefixo, contador: contador, casas: casas}, function(data){
                    document.write(data);
                    document.close();
                    $('select#contadores').val(novadescricao);
@@ -98,7 +103,8 @@
       $('#apagar').on('click',function(event){
              $('#descricao').val($('select#contadores option:selected').text());
              var descricao = $('#descricao').val();
-             rest.del('/contador/descricao/'+descricao, function(data){
+             var token = $('#token').attr('value');
+             rest.del('/contador/descricao/'+descricao, {token: token}, function(data){
                    document.write(data);
                    document.close();
              });

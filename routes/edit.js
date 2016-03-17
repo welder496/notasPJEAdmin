@@ -5,9 +5,11 @@ var perfilRest = require('perfilrest');
 var funcionalidadeRest = require('funcionalidaderest');
 var rest = require('restler');
 var fs = require('fs');
+var token = global.__token;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+   token = global.__token;
    var codigo = req.body.codigo;
    var versao = 0;
    var nota = "";
@@ -18,27 +20,26 @@ router.get('/', function(req, res, next) {
    var subTipos = "";
    var message = "";
    var show = 'false';
-   notasRest.getNotaByCodigo(codigo, function(data){
+   notasRest.getNotaByCodigo(token, codigo, function(data){
       console.log(data);
       versao = data.__v;
       nota = data.nota;
       tags = data.tags;
       arquivos = data.arquivos;
-      perfilRest.getPerfils(function(data){
+      perfilRest.getPerfils(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                     perfils = data;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
+             funcionalidadeRest.getFuncionalidades(token, function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
                           funcionalidades = data;
                           descricao = funcionalidades[0].descricao;
                    }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                   funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                           if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                 subTipos = data.subtipos;
                           }
-                         console.log(perfils+" "+funcionalidades+" "+subTipos);
-                         res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show});
+                         res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show, token: token});
                    });
              });
       });
@@ -48,21 +49,22 @@ router.get('/', function(req, res, next) {
 /* GET funcionalidade subtipo */
 router.get('/funcionalidade/:descricao', function(req, res, next) {
       /* Do not change this object */
+      token = global.__token;
       var descricao = req.params.descricao;
       var perfils = "";
       var message = "";
       var funcionalidades = "";
       var subTipos = "";
       var show = "false";
-      perfilRest.getPerfils(function(data){
+      perfilRest.getPerfils(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                     perfils = data;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
+             funcionalidadeRest.getFuncionalidades(token, function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
                           funcionalidades = data;
                    }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                   funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                           if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                 subTipos = data.subtipos;
                           }
@@ -73,15 +75,21 @@ router.get('/funcionalidade/:descricao', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next){
+   token = req.body.token;
    var codigo = req.body.codigo;
    var comando = req.body.comando;
+   if (comando == 'edit') {
+       token = global.__token;
+   } else {
+       token = req.body.token;
+   }
    var versao = 0;
    var nota = "";
    var tags = "";
    var arquivos = "";
    var message = "";
    var show = 'false';
-   notasRest.getNotaByCodigo(codigo,function(data){
+   notasRest.getNotaByCodigo(token, codigo, function(data){
       if (data.hasOwnProperty('codigo')){
              versao = parseInt(data.__v);
              nota = data.nota;
@@ -94,20 +102,20 @@ router.post('/', function(req, res, next){
       }
    });
    if (comando == 'edit') {
-      perfilRest.getPerfils(function(data){
+      perfilRest.getPerfils(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                     perfils = data;
              }
-             funcionalidadeRest.getFuncionalidades(function(data){
+             funcionalidadeRest.getFuncionalidades(token, function(data){
                    if ((data instanceof Array) && (data.length != 0)) {
                           funcionalidades = data;
                           descricao = funcionalidades[0].descricao;
                    }
-                   funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                   funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                           if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                 subTipos = data.subtipos;
                           }
-                         res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show});
+                         res.render('edit', {codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show, token: token});
                    });
              });
       });
@@ -144,12 +152,12 @@ router.post('/', function(req, res, next){
        }
        if (! found)
              notadata['tags']=notadata['codigo']+','+notadata['tags'];
-       notasRest.updateNotaByCodigo(codigo,notadata, function(data){
+       notasRest.updateNotaByCodigo(token, codigo,notadata, function(data){
              if (data.hasOwnProperty('message')){
                    message = data.message;
                    show = 'true';
              }
-             notasRest.getNotaByCodigo(codigo, function(data){
+             notasRest.getNotaByCodigo(token, codigo, function(data){
                    if (data.hasOwnProperty('codigo')){
                           versao = parseInt(data.__v);
                           nota = data.nota;
@@ -160,26 +168,27 @@ router.post('/', function(req, res, next){
                           message = data.message;
                           show = 'true';
                    }
-                   perfilRest.getPerfils(function(data){
+                   perfilRest.getPerfils(token, function(data){
                           if ((data instanceof Array) && (data.length != 0)) {
                                 perfils = data;
                           }
-                          funcionalidadeRest.getFuncionalidades(function(data){
+                          funcionalidadeRest.getFuncionalidades(token, function(data){
                                 if ((data instanceof Array) && (data.length != 0)) {
                                        funcionalidades = data;
                                        descricao = funcionalidades[0].descricao;
                                 }
-                                funcionalidadeRest.getFuncionalidadeByDescricao(descricao, function(data){
+                                funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
                                        if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
                                              subTipos = data.subtipos;
                                       }
-                                      res.render('edit',{codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show});
+                                      res.render('edit',{codigo: codigo, nota: nota, tags: tags, arquivos: arquivos, versao: versao, perfils: perfils, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show:show, token: token});
                                 });
                           });
                    });
              });
        });
    }
+   global.__token = token;
 });
 
 module.exports = router;

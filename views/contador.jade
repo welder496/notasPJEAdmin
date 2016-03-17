@@ -12,6 +12,7 @@ block css
 
 block content
    form.form-horizontal(role="form" method="post")
+      input#token(type="hidden" name="token" value='#{token}')
       div.form-group
          label.control-label.col-sm-2(for="contadores") Contadores:
          div.col-sm-10

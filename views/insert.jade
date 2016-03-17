@@ -15,6 +15,7 @@ block css
 
 block content
    form.form-horizontal(role="form" method="post" enctype="multipart/form-data")
+      input#token(type="hidden" name="token" value='#{token}')
       div.form-group
           label.control-label.col-sm-2(for="tipo nota") Tipo de Nota:
           div.col-sm-2

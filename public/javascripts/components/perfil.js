@@ -10,7 +10,8 @@
 
       $('#salvarPerfil').on('click',function(event){
          var descricao = $.trim($('#descricao').val());
-         rest.post('/perfil/new',{descricao: descricao}, function(data){
+         var token = $('#token').attr('value');
+         rest.post('/perfil/new',{token: token, descricao: descricao}, function(data){
                 document.write(data);
                 document.close();
                 $('select#perfils').val(descricao);
@@ -22,7 +23,8 @@
       $('#atualizarPerfil').on('click',function(event){
          var perfil = $.trim($('#descricao').val());
          var id = $("select#perfils option:selected").attr('id');
-         rest.put('/perfil/'+id+'/'+perfil,function(data){
+         var token = $('#token').attr('value');
+         rest.put('/perfil/'+id+'/'+perfil, {token: token}, function(data){
                 document.write(data);
                 document.close();
                 $('select#perfils').val(perfil);
@@ -33,7 +35,8 @@
 
       $('#apagarPerfil').on('click',function(event){
          var perfil = $("select#perfils option:selected").text();
-         rest.del('/perfil/'+perfil,function(data){
+         var token = $('#token').attr('value');
+         rest.del('/perfil/'+perfil, {token: token},function(data){
                document.write(data);
                document.close();
                $('select#perfils option:first-child').attr("selected", "selected");
