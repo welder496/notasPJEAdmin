@@ -1,3 +1,6 @@
+      var prefixo = "";
+      var selText = "";
+
       $("#insertCodigo").on('keyup',function(event){
            var codigo = $(this).val().replace(/[^a-zA-Z\-\d]/g,'');
            $(this).val(codigo.toUpperCase());
@@ -82,11 +85,11 @@
       });
 
       $("#TipoNota.dropdown-menu li a").click(function(event){
-             var selText = $(this).text();
-             var prefixo = $(this).attr('value');
+             selText = $(this).text();
+             prefixo = $(this).attr('value');
              $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
              if (selText != "Nenhum Tipo") {
-                   rest.get('/insert/prefixo/'+prefixo+'/next', function(data){
+                   rest.get('/insert/prefixo/'+prefixo+'/searchnext', function(data){
                           $('#insertCodigo').val(data);
                    });
                    $('#insertTags').tokenfield('createToken', selText);
@@ -102,5 +105,13 @@
              var numero = $(this).val();
              if (numero != ""){
                    $('#insertTags').tokenfield('createToken', 'Issue: '+numero);
+             }
+      });
+
+      $('#salvar').on('click', function(event){
+             if (selText != "Nenhum Tipo") {
+                   rest.get('/insert/prefixo/'+prefixo+'/next', function(data){
+                          $('#insertCodigo').val(data);
+                   });
              }
       });

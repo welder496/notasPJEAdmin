@@ -22,26 +22,26 @@ router.get('/', function(req, res) {
       var subTipos = "";
       var show = 'false';
       contadorRest.getContadores(token, function(data){
-             if ((data instanceof Array) && (data.length != 0)) {
-                   contadores = data;
-             }
-            perfilRest.getPerfils(token, function(data){
-                   if ((data instanceof Array) && (data.length != 0)) {
-                          perfils = data;
-                   }
-                   funcionalidadeRest.getFuncionalidades(token, function(data){
-                         if ((data instanceof Array) && (data.length != 0)) {
-                                funcionalidades = data;
-                                descricao = funcionalidades[0].descricao;
-                         }
-                         funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
-                                if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
-                                      subTipos = data.subtipos;
-                                }
-                                res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, contadores: contadores, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show, token: token});
-                         });
-                   });
-            });
+           if ((data instanceof Array) && (data.length != 0)) {
+                 contadores = data;
+           }
+           perfilRest.getPerfils(token, function(data){
+                 if ((data instanceof Array) && (data.length != 0)) {
+                       perfils = data;
+                 }
+                 funcionalidadeRest.getFuncionalidades(token, function(data){
+                      if ((data instanceof Array) && (data.length != 0)) {
+                            funcionalidades = data;
+                            descricao = funcionalidades[0].descricao;
+                      }
+                      funcionalidadeRest.getFuncionalidadeByDescricao(token, descricao, function(data){
+                            if ((data.subtipos instanceof Array) && (data.subtipos.length != 0)) {
+                                  subTipos = data.subtipos;
+                            }
+                            res.render('insert',{codigo: codigo, nota: nota, tags: tags, perfils: perfils, contadores: contadores, funcionalidades: funcionalidades, subTipos: subTipos, message: message, show: show, token: token});
+                      });
+                });
+           });
       });
 });
 
@@ -52,6 +52,16 @@ router.get('/prefixo/:prefixo/next', function(req, res) {
       contadorRest.getNextContadorByPrefixo(token, prefixo, function(data){
             res.send(data);
       });
+});
+
+/* GET search contador */
+router.get('/prefixo/:prefixo/searchnext', function(req,res) {
+      token = global.__token;
+      var prefixo = req.params.prefixo;
+      contadorRest.searchNextContadorByPrefixo(token, prefixo, function(data){
+            res.send(data);
+      });
+
 });
 
 /* GET funcionalidade subtipo */
@@ -122,10 +132,10 @@ router.post('/',function(req, res){
       notadata['tags']=notadata['codigo']+','+notadata['tags'];
    }
    notasRest.newNota(token, notadata,function(data){
-       if (data.hasOwnProperty('message')){
+      if (data.hasOwnProperty('message')){
              message = data.message;
              show = 'true';
-       }
+      }
       contadorRest.getContadores(token, function(data){
              if ((data instanceof Array) && (data.length != 0)) {
                    contadores = data;
