@@ -87,6 +87,7 @@
       $("#TipoNota.dropdown-menu li a").click(function(event){
              selText = $(this).text();
              prefixo = $(this).attr('value');
+             $('#prefixCodigo').val(prefixo);
              $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"> </span>');
              if (selText != "Nenhum Tipo") {
                    rest.get('/insert/prefixo/'+prefixo+'/searchnext', function(data){
@@ -108,10 +109,4 @@
              }
       });
 
-      $('#salvar').on('click', function(event){
-             if (selText != "Nenhum Tipo") {
-                   rest.get('/insert/prefixo/'+prefixo+'/next', function(data){
-                          $('#insertCodigo').val(data);
-                   });
-             }
-      });
+

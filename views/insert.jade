@@ -33,6 +33,7 @@ block content
       div.form-group
          label.control-label.col-sm-2(for="codigo") Código:
          div.col-sm-3
+            input#prefixCodigo(type="hidden" name="prefixCodigo" value="")
             input#insertCodigo.form-control(type="text" name="codigo" tabindex=1 required maxlength="20" placeholder="Insira um código" value="#{codigo}")
 
       div.form-group
